@@ -25,8 +25,8 @@ function Login({ onLoginSuccess }) {
   return (
     <div className="login-container">
       <div className="login-left">
-        <h1>Hello<br/>Secure Medication!</h1>
-        <p>Encuentra tus medicamentos rápidamente. Evita búsquedas repetitivas y ahorra tiempo cuidando tu salud.</p>
+        <h1>Secure Medication</h1>
+        <p>The place to find the medicines you need</p>
       </div>
 
       <div className="login-right">
