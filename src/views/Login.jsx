@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../css/Login.css';
 
 function Login({ onLoginSuccess }) {
   const [isRegistering, setIsRegistering] = useState(false);
@@ -8,7 +9,6 @@ function Login({ onLoginSuccess }) {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // Aquí irá la petición al API Gateway para validar el login
     if (nombre && password) {
       onLoginSuccess();
     }
@@ -16,7 +16,6 @@ function Login({ onLoginSuccess }) {
 
   const handleRegister = (e) => {
     e.preventDefault();
-    // Aquí irá la petición al API Gateway para registrar al usuario
     if (nombre && correo && password) {
       setIsRegistering(false);
       setCorreo('');
@@ -24,25 +23,52 @@ function Login({ onLoginSuccess }) {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      {isRegistering ? (
-        <form onSubmit={handleRegister} className="auth-form" style={{ display: 'flex', flexDirection: 'column', gap: '15px', padding: '20px', border: '1px solid #ccc', borderRadius: '8px' }}>
-          <h2>Registrarse</h2>
-          <input type="text" placeholder="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
-          <input type="email" placeholder="Correo" value={correo} onChange={(e) => setCorreo(e.target.value)} required />
-          <input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} required />
-          <button type="submit">Crear cuenta</button>
-          <p style={{ cursor: 'pointer', color: 'blue' }} onClick={() => setIsRegistering(false)}>¿Ya tienes cuenta? Inicia sesión</p>
-        </form>
-      ) : (
-        <form onSubmit={handleLogin} className="auth-form" style={{ display: 'flex', flexDirection: 'column', gap: '15px', padding: '20px', border: '1px solid #ccc', borderRadius: '8px' }}>
-          <h2>Iniciar Sesión</h2>
-          <input type="text" placeholder="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
-          <input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} required />
-          <button type="submit">Entrar</button>
-          <p style={{ cursor: 'pointer', color: 'blue' }} onClick={() => setIsRegistering(true)}>¿No tienes cuenta? Regístrate</p>
-        </form>
-      )}
+    <div className="login-container">
+      <div className="login-left">
+        <h1>Hello<br/>Secure Medication!</h1>
+        <p>Encuentra tus medicamentos rápidamente. Evita búsquedas repetitivas y ahorra tiempo cuidando tu salud.</p>
+      </div>
+
+      <div className="login-right">
+        <div className="login-form-wrapper">
+          <h2>{isRegistering ? 'Crear Cuenta' : 'Welcome Back!'}</h2>
+          <p className="subtitle">
+            {isRegistering ? '¿Ya tienes cuenta? ' : '¿No tienes cuenta? '}
+            <span className="toggle-link" onClick={() => setIsRegistering(!isRegistering)}>
+              {isRegistering ? 'Inicia sesión ahora.' : 'Crea una cuenta nueva.'}
+            </span>
+          </p>
+
+          <form onSubmit={isRegistering ? handleRegister : handleLogin}>
+            <input
+              type="text"
+              placeholder="Nombre"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              required
+            />
+            {isRegistering && (
+              <input
+                type="email"
+                placeholder="Correo electrónico"
+                value={correo}
+                onChange={(e) => setCorreo(e.target.value)}
+                required
+              />
+            )}
+            <input
+              type="password"
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button type="submit" className="submit-btn">
+              {isRegistering ? 'Registrarse' : 'Login Now'}
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }
