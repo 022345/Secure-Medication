@@ -7,10 +7,17 @@ namespace SecureMedication.Gateway
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            /*The configuration for YARP is defined in the appsettings.json file,
+              the ReverseProxy is the section pointed in the Dependency Injection 
+              where the YARP config is made*/
 
+            //Dependency Injection of YARP configuration
+            builder.Services.AddReverseProxy()
+                .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+
+            // Add services to the container.
             builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
             builder.Services.AddOpenApi();
 
             var app = builder.Build();
@@ -27,6 +34,9 @@ namespace SecureMedication.Gateway
 
 
             app.MapControllers();
+
+            //Method that allows to use the YARP configuration middleware
+            app.MapReverseProxy();
 
             app.Run();
         }
