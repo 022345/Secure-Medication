@@ -1,0 +1,6 @@
+@SecureMedication.Medicines.Api_HostAddress = http://localhost:5045
+
+GET {{SecureMedication.Medicines.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

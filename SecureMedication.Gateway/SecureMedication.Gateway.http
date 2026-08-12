@@ -1,0 +1,6 @@
+@SecureMedication.Gateway_HostAddress = http://localhost:5190
+
+GET {{SecureMedication.Gateway_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

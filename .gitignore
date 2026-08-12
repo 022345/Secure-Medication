@@ -1,0 +1,9 @@
+# Visual Studio y carpetas de compilación
+.vs/
+**/bin/
+**/obj/
+
+# Node / React
+**/node_modules/
+**/build/
+.env
