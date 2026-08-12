@@ -15,10 +15,11 @@
         private string _medicineImg { get; set; }
         private string _medicineBuyingLink { get; set; }
 
-        public Medicine (string _medicineId, string _medicineName)
+        public Medicine (string _medicineId, string _medicineName, string _medicineDescription)
         {
             this._medicineId= _medicineId;
             this._medicineName= _medicineName;
+            this._medicineDescription = _medicineDescription;
         }
     }
 }
