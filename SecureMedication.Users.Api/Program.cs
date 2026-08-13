@@ -1,4 +1,3 @@
-
 namespace SecureMedication.Users.Api
 {
     public class Program
