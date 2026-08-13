@@ -1,25 +1,48 @@
-﻿namespace SecureMedication.Medicines.Api.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SecureMedication.Medicines.Api.Models
 {
+    [Table("medicines")] // EF Core reads this annotation and maps this class into a table in the DB
     public class Medicine
     {
-        private string _medicineId { get; set; }
-        private string _medicineName { get; set; }
-        private string _medicineDescription { get; set; }
-        private string _medicineBrand { get; set; }
-        private int _medicineDailyDosage { get; set; }
-        private int _medicineMilligrams { get; set; }
-        private int _medicineQuantity { get; set; }
-        private List<string> _medicineIndications { get; set; }
-        private string _medicinePresentation { get; set; }
-        private long _medicineServings_Per_Container { get; set; }
-        private string _medicineImg { get; set; }
-        private string _medicineBuyingLink { get; set; }
+        // All the fields MUST be public with their { get; set; } so EF Core and JSON serializers can read/write them
+        
+        [Key] // Primary Key
+        public string Id { get; set; }
 
-        public Medicine (string _medicineId, string _medicineName, string _medicineDescription)
+        [Required] // Sets column as NOT NULL
+        [MaxLength(25)] // Defines maximum string length (VARCHAR(25))
+        public string Name { get; set; } = string.Empty;
+
+        [Required]
+        [MaxLength(150)]
+        public string Description { get; set; } = string.Empty;
+
+        [Required]
+        [MaxLength(50)]
+        public string Brand { get; set; } = string.Empty;
+
+        public int DailyDosage { get; set; }
+        public int Milligrams { get; set; }
+        public int Quantity { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public string Presentation { get; set; } = string.Empty;
+
+        public long ServingsPerContainer { get; set; }
+
+        // The '?' operator allows the property to be NULLABLE in SQL without throwing C# compiler warnings
+        public string? ImageUrl { get; set; }
+        public string? BuyingLink { get; set; }
+
+        // EF Core requires a parameterless constructor to instantiate the model when querying the DB
+        public Medicine() 
         {
-            this._medicineId= _medicineId;
-            this._medicineName= _medicineName;
-            this._medicineDescription = _medicineDescription;
+        
         }
+
+
     }
 }

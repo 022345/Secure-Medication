@@ -1,0 +1,50 @@
+#This is the base file for the Docker Compose where it defines where is the logic (the source code), 
+#and the location of the Dockerfile to access the copied api inside the Dockerfile when it creates 
+#the container
+
+#Section that define the microservices available
+services:
+  #Central applicaction point: Gateway
+  securemedication.gateway:
+    image: ${DOCKER_REGISTRY-}securemedicationgateway
+    build:
+        # the '.' means that the logic to access is located at the root of the Dockerfile
+      context: .
+      dockerfile: SecureMedication.Gateway/Dockerfile
+    #This section stores the ports to access this application. 
+    ports:
+        # The first part is the computer's port where it receives the information, 
+        #and the 2nd part is the api's port where it receives the information that comes from the 1st part
+        - "5050:8080"
+        - "5021:8082"
+
+  #Microservice 1: Medicine management
+  securemedication.medicines.api:
+    image: ${DOCKER_REGISTRY-}securemedicationmedicinesapi
+    build:
+      context: .
+      dockerfile: SecureMedication.Medicines.Api/Dockerfile
+    ports:
+        - "5090:8080"
+        - "5061:8082"
+
+  #Microservice 2: Shopping Cart
+  securemedication.shoppingcart.api:
+    image: ${DOCKER_REGISTRY-}securemedicationshoppingcartapi
+    build:
+      context: .
+      dockerfile: SecureMedication.ShoppingCart.Api/Dockerfile
+    ports:
+        - "5023:8080"
+        - "5014:8082"
+
+  #Microservice 3: Users management
+  securemedication.users.api:
+    image: ${DOCKER_REGISTRY-}securemedicationusersapi
+    build:
+      context: .
+      dockerfile: SecureMedication.Users.Api/Dockerfile
+    ports:
+        - "5100:8084"
+        - "5200:8082"
+

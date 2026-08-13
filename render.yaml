@@ -1,0 +1,86 @@
+# A YAML file is a plain text file that uses a human-friendly, clean data format ending 
+# in .yaml or .yml. It is used mainly to store data and write settings or 
+# instructions for software, relying on clear spacing and indentation instead of complex brackets or braces.
+
+# This render.yaml file will be read by Render and will work as the blueprint to know how to build 
+# and deploy the architecture of the application using code.
+
+# Root-level fields
+
+# Field where the microservices are declared
+services:
+    # Service fields
+    
+    # Service 1: Gateway microservice
+    # Defines the type of service. 'web' grants a public URL to access it from the internet.
+    - type: web # In YAML syntax, a hyphen (-) marks an item inside a List (Array) or Collection.
+                # In this case "services" becomes a list containing multiple elements.
+      
+      # Defines the name of the service (used in Render dashboard and routing)
+      name: gateway-api
+      # Defines the pricing plan
+      plan: free
+      
+      # Defines the corresponding compiler/runtime. As it is .NET, the runtime builds inside Docker.
+      runtime: docker
+      # Defines the Dockerfile path relative to the root directory
+      dockerfilePath: SecureMedication.Gateway/Dockerfile 
+      # Defines the context directory to find source code when building the container
+      dockerContext: . 
+    
+      # Environment variables
+      # These configure the container runtime settings and dynamic properties
+      envVars:
+        # Sets .NET runtime mode to Production to hide detailed debugging stack traces from end-users
+        - key: ASPNETCORE_ENVIRONMENT 
+          value: Production
+        
+        # Defines the port where the application listens inside the Docker container
+        - key: PORT 
+          value: 8080 
+
+
+    # Service 2: Medicines microservice
+    # 'pserv' makes it a Private Service (accessible only internally inside Render network, no public URL)
+    - type: pserv 
+      name: medicines-api # Hyphens are used instead of dots for proper internal DNS resolution
+      plan: free
+      runtime: docker
+      dockerfilePath: SecureMedication.Medicines.Api/Dockerfile
+      dockerContext: .
+        
+      envVars:
+        - key: ASPNETCORE_ENVIRONMENT 
+          value: Production
+        - key: PORT
+          value: 8080
+
+
+    # Service 3: Shopping Cart microservice
+    - type: pserv
+      name: shoppingcart-api
+      plan: free
+      runtime: docker
+      dockerfilePath: SecureMedication.ShoppingCart.Api/Dockerfile
+      dockerContext: .
+        
+      envVars:
+        - key: ASPNETCORE_ENVIRONMENT 
+          value: Production
+        - key: PORT
+          value: 8080
+
+
+    # Service 4: Users management microservice
+    - type: pserv
+      name: users-api
+      plan: free
+      runtime: docker
+      dockerfilePath: SecureMedication.Users.Api/Dockerfile
+      dockerContext: .
+        
+      envVars:
+        - key: ASPNETCORE_ENVIRONMENT 
+          value: Production
+        - key: PORT
+          value: 8080

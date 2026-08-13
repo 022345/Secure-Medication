@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "securemedication.gateway": "StartDebugging",
+        "securemedication.medicines.api": "StartDebugging",
+        "securemedication.shoppingcart.api": "StartDebugging",
+        "securemedication.users.api": "StartDebugging"
+      }
+    }
+  }
+}

@@ -23,9 +23,9 @@ namespace SecureMedication.Medicines.Api.Controllers
 
         [Route("saveMedicine")]
         //Need to be for the actual endpoint: public List<Medicine> SaveMedicines(Medicine medicine)
-        public string saveMedicines(Medicine medicine)
+        public string saveMedicines()
         {
-            var medicineList = new List<Medicine>();
+            //var medicineList = new List<Medicine>();
             return "Endpoint to save medicines, WORK ON PROGRESS";
 
         }
