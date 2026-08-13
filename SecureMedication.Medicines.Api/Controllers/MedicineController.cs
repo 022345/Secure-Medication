@@ -6,7 +6,6 @@ using System.Net;
 //Need to use the namespace for the Models package in order to access the classes models 
 using SecureMedication.Medicines.Api.Models; 
 
-
 namespace SecureMedication.Medicines.Api.Controllers
 {
     //This is the main endpoint which leads to all of the other endpoints.

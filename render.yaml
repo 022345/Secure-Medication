@@ -17,7 +17,7 @@ services:
                 # In this case "services" becomes a list containing multiple elements.
       
       # Defines the name of the service (used in Render dashboard and routing)
-      name: gateway-api
+      name: gateway
       # Defines the pricing plan
       plan: free
       
@@ -42,8 +42,8 @@ services:
 
     # Service 2: Medicines microservice
     # 'pserv' makes it a Private Service (accessible only internally inside Render network, no public URL)
-    - type: pserv 
-      name: medicines-api # Hyphens are used instead of dots for proper internal DNS resolution
+    - type: web
+      name: medicines-mcrsv # Hyphens are used instead of dots for proper internal DNS resolution
       plan: free
       runtime: docker
       dockerfilePath: SecureMedication.Medicines.Api/Dockerfile
@@ -57,8 +57,8 @@ services:
 
 
     # Service 3: Shopping Cart microservice
-    - type: pserv
-      name: shoppingcart-api
+    - type: web
+      name: shoppingcart-mcrsv
       plan: free
       runtime: docker
       dockerfilePath: SecureMedication.ShoppingCart.Api/Dockerfile
@@ -72,8 +72,8 @@ services:
 
 
     # Service 4: Users management microservice
-    - type: pserv
-      name: users-api
+    - type: web
+      name: users-mcrsv
       plan: free
       runtime: docker
       dockerfilePath: SecureMedication.Users.Api/Dockerfile
@@ -84,3 +84,5 @@ services:
           value: Production
         - key: PORT
           value: 8080
+
+      #All types need to be web

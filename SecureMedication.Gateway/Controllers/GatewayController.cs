@@ -2,7 +2,7 @@
 
 namespace SecureMedication.Gateway.Controllers
 {
-    [Route("central")]
+    [Route("gateway")]
     public class GatewayController : Controller
     {
         [Route("home")]
