@@ -16,7 +16,7 @@ namespace SecureMedication.Gateway
                 .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
             // Add services to the container.
-            builder.Services.AddControllers();
+            //builder.Services.AddControllers();
 
             builder.Services.AddOpenApi();
 
@@ -33,7 +33,7 @@ namespace SecureMedication.Gateway
             app.UseAuthorization();
 
 
-            app.MapControllers();
+            //app.MapControllers();
 
             //Method that allows to use the YARP configuration middleware
             app.MapReverseProxy();

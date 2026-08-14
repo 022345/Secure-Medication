@@ -86,3 +86,7 @@ services:
           value: 8080
 
       #All types need to be web
+
+    # Secutity Framework: Keycloak
+    keycloak:
+    
