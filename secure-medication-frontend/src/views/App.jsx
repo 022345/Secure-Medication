@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Login from './Login';
+import Cart from './Cart';
 import '../css/App.css';
 
-const API_URL = 'https://secure-medication.onrender.com/medicines';
+const MEDICINES_API_URL = 'https://gateway-eile.onrender.com/gateway/medicinesMRS/medicine/home';
 
 const diccionarioSintomas = {
   "riñon": "kidney", 
@@ -15,21 +16,20 @@ const diccionarioSintomas = {
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+  const [currentView, setCurrentView] = useState('home');
   const [medicamentos, setMedicamentos] = useState([]);
   const [terminoBusqueda, setTerminoBusqueda] = useState('');
 
   useEffect(() => {
     if (isLoggedIn) {
-      fetch(API_URL, {
+      fetch(MEDICINES_API_URL, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          // 'Authorization': `Bearer ${tu_token_jwt}` 
-        }
+        headers: { 'Content-Type': 'application/json' }
       })
         .then((response) => response.json())
-        .then((data) => setMedicamentos(data))
-        .catch((error) => console.error('Error al conectar con la API:', error));
+        .then((data) => setMedicamentos(Array.isArray(data) ? data : []))
+        .catch((error) => console.error('Error al conectar con la API de medicinas:', error));
     }
   }, [isLoggedIn]);
 
@@ -57,46 +57,72 @@ function App() {
     });
   });
 
+  const handleLoginSuccess = (userData) => {
+    setUser(userData);
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUser(null);
+    setCurrentView('home');
+  };
+
   if (!isLoggedIn) {
-    return <Login onLoginSuccess={() => setIsLoggedIn(true)} />;
+    return <Login onLoginSuccess={handleLoginSuccess} />;
   }
 
   return (
     <div className="app-container">
-      <header className="header-section">
+      <header className="header-section" style={{ position: 'relative' }}>
         <h1>Secure Medication</h1>
         <p>Need anything? Then please enter the medicines you need in the search bar</p>
-        <button onClick={() => setIsLoggedIn(false)} style={{ position: 'absolute', top: '20px', right: '20px' }}>Cerrar Sesión</button>
-        <div className="search-box">
-          <input
-            type="text"
-            placeholder="¿Cuál es su indicación?"
-            value={terminoBusqueda}
-            onChange={(e) => setTerminoBusqueda(e.target.value)}
-            className="search-input"
-          />
+        
+        <div style={{ position: 'absolute', top: '0', right: '0', display: 'flex', gap: '10px' }}>
+          <button onClick={() => setCurrentView('home')} className="buy-button">Inicio</button>
+          <button onClick={() => setCurrentView('cart')} className="buy-button">Carrito</button>
+          <button onClick={handleLogout} className="buy-button" style={{ background: '#d9534f' }}>Cerrar Sesión</button>
         </div>
+
+        {currentView === 'home' && (
+          <div className="search-box">
+            <input
+              type="text"
+              placeholder="¿Cuál es su indicación?"
+              value={terminoBusqueda}
+              onChange={(e) => setTerminoBusqueda(e.target.value)}
+              className="search-input"
+            />
+          </div>
+        )}
       </header>
 
-      <main className="cards-grid">
-        {medicamentosFiltrados.map((med) => (
-          <div key={med.id} className="medicine-card">
-            <h2 className="medicine-name">{med.name}</h2>
-            <p><strong>Marca:</strong> {med.brand}</p>
-            <p>{med.description}</p>
-            <div className="technical-info">
-              <span><strong>Dosis:</strong> {med.daily_dosage}</span>
-            </div>
-            <div className="indications-container">
-              {med.indications?.map((ind, index) => (
-                <span key={index} className="indication-tag">{ind}</span>
-              ))}
-            </div>
-            <a href={med.buying_link} target="_blank" rel="noopener noreferrer" className="buy-button">
-              Ver en Amazon
-            </a>
+      <main>
+        {currentView === 'home' ? (
+          <div className="cards-grid">
+            {medicamentosFiltrados.map((med) => (
+              <div key={med.id} className="medicine-card">
+                <div className="card-accent" />
+                <h2 className="medicine-name">{med.name}</h2>
+                <p className="medicine-brand"><strong>Marca:</strong> {med.brand}</p>
+                <p className="medicine-description">{med.description}</p>
+                <div className="technical-info">
+                  <span><strong>Dosis:</strong> {med.daily_dosage}</span>
+                </div>
+                <div className="indications-container">
+                  {med.indications?.map((ind, index) => (
+                    <span key={index} className="indication-tag">{ind}</span>
+                  ))}
+                </div>
+                <a href={med.buying_link} target="_blank" rel="noopener noreferrer" className="buy-button">
+                  Ver en Amazon
+                </a>
+              </div>
+            ))}
           </div>
-        ))}
+        ) : (
+          <Cart user={user} />
+        )}
       </main>
     </div>
   );
