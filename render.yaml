@@ -95,7 +95,6 @@ services:
       dockerContext: .
       
       envVars:
+      #Can't have two same fields. Only one
       - key: PORT
         value: 8080
-      - key: PORT
-        value: 8084
