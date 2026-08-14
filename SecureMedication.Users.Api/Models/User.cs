@@ -5,10 +5,10 @@ namespace SecureMedication.Users.Api.Models
 {
     //Is a good practice to use lowercase names for DB
     [Table("users")] // EF Core will map this class into the "users" table
-    public class Users
+    public class User
     {
         [Key] // Primary Key definition
-        public int Id { get; set; }
+        public int UserId { get; set; }
 
         [Required]
         [MaxLength(25)]
