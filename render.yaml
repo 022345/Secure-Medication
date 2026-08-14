@@ -97,4 +97,4 @@ services:
       envVars:
         - key: PORT
           value: 8080
-        - fromGroup: keycloak-env
+        - fromGroup: KeyCloack
