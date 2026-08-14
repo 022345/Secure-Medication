@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from 'react';
 
-const CART_API_URL = 'https://gateway-eile.onrender.com/gateway/shoppingcartMRS/cart';
+const CART_API = 'https://gateway-eile.onrender.com/gateway/shoppingcartMRS/cart';
 
 function Cart({ user }) {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const userId = user?.id || 1;
-    fetch(`${CART_API_URL}/${userId}`)
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchCart = async () => {
+      try {
+        const response = await fetch(`${CART_API}/${user?.id || 1}`);
+        const data = await response.json();
         setCartItems(Array.isArray(data) ? data : []);
-        setLoading(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error('Error al obtener el carrito:', err);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+    fetchCart();
   }, [user]);
 
   if (loading) return <p style={{ textAlign: 'center' }}>Cargando carrito...</p>;

@@ -3,74 +3,45 @@ import Login from './Login';
 import Cart from './Cart';
 import '../css/App.css';
 
-const MEDICINES_API_URL = 'https://gateway-eile.onrender.com/gateway/medicinesMRS/medicine/home';
+const MEDICINES_API = 'https://gateway-eile.onrender.com/gateway/medicinesMRS/medicine/home';
 
 const diccionarioSintomas = {
-  "riñon": "kidney", 
-  "riñones": "kidneys", 
-  "higado": "liver", "hígado": "liver",
+  "riñon": "kidney", "riñones": "kidneys", "higado": "liver", "hígado": "liver",
   "dolor": "pain", "vejiga": "bladder", "corazon": "heart", "corazón": "heart",
   "articulaciones": "joints", "tracto urinario": "urinary tract",
   "antioxidante": "antioxidant", "soporte de higado": "liver support"
 };
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [currentView, setCurrentView] = useState('home');
   const [medicamentos, setMedicamentos] = useState([]);
   const [terminoBusqueda, setTerminoBusqueda] = useState('');
 
   useEffect(() => {
-    if (isLoggedIn) {
-      fetch(MEDICINES_API_URL, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-      })
-        .then((response) => response.json())
-        .then((data) => setMedicamentos(Array.isArray(data) ? data : []))
-        .catch((error) => console.error('Error al conectar con la API de medicinas:', error));
-    }
-  }, [isLoggedIn]);
+    if (!user) return;
+    fetch(MEDICINES_API)
+      .then((res) => res.json())
+      .then((data) => setMedicamentos(Array.isArray(data) ? data : []))
+      .catch((err) => console.error('Error al conectar con la API de medicinas:', err));
+  }, [user]);
+
+  if (!user) return <Login onLoginSuccess={setUser} />;
 
   const medicamentosFiltrados = medicamentos.filter((med) => {
     if (!terminoBusqueda) return true;
+    const query = terminoBusqueda.toLowerCase();
+    const palabras = query.split(/\s+/).filter(Boolean);
 
-    const oracionUsuario = terminoBusqueda.toLowerCase();
-    const palabrasUsuario = oracionUsuario.split(/\s+/).filter(p => p.length > 0);
-
-    if (!med.indications || !Array.isArray(med.indications)) return false;
-
-    const indicacionesMed = med.indications.map(ind => ind.toLowerCase());
-
-    return palabrasUsuario.some((palabra) => {
-      const traduccionPalabra = diccionarioSintomas[palabra];
-      const traduccionOracionCompleta = diccionarioSintomas[oracionUsuario];
-
-      return indicacionesMed.some((indicacion) => {
-        const coincidePalabraOriginal = indicacion.includes(palabra);
-        const coincideTraduccionPalabra = traduccionPalabra ? indicacion.includes(traduccionPalabra) : false;
-        const coincideTraduccionCompleta = traduccionOracionCompleta ? indicacion.includes(traduccionOracionCompleta) : false;
-
-        return coincidePalabraOriginal || coincideTraduccionPalabra || coincideTraduccionCompleta;
-      });
+    return med.indications?.some((ind) => {
+      const lowerInd = ind.toLowerCase();
+      return palabras.some((p) => 
+        lowerInd.includes(p) || 
+        lowerInd.includes(diccionarioSintomas[p] || '') || 
+        lowerInd.includes(diccionarioSintomas[query] || '')
+      );
     });
   });
-
-  const handleLoginSuccess = (userData) => {
-    setUser(userData);
-    setIsLoggedIn(true);
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUser(null);
-    setCurrentView('home');
-  };
-
-  if (!isLoggedIn) {
-    return <Login onLoginSuccess={handleLoginSuccess} />;
-  }
 
   return (
     <div className="app-container">
@@ -81,7 +52,7 @@ function App() {
         <div style={{ position: 'absolute', top: '0', right: '0', display: 'flex', gap: '10px' }}>
           <button onClick={() => setCurrentView('home')} className="buy-button">Inicio</button>
           <button onClick={() => setCurrentView('cart')} className="buy-button">Carrito</button>
-          <button onClick={handleLogout} className="buy-button" style={{ background: '#d9534f' }}>Cerrar Sesión</button>
+          <button onClick={() => { setUser(null); setCurrentView('home'); }} className="buy-button" style={{ background: 'rgb(217, 83, 79)' }}>Cerrar Sesión</button>
         </div>
 
         {currentView === 'home' && (

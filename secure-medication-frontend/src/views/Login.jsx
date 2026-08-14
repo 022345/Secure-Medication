@@ -1,51 +1,38 @@
 import React, { useState } from 'react';
 import '../css/Login.css';
 
-const USERS_API_URL = 'https://gateway-eile.onrender.com/gateway/usersMRS/users';
+const USERS_API = 'https://gateway-eile.onrender.com/gateway/usersMRS/users';
 
 function Login({ onLoginSuccess }) {
   const [isRegistering, setIsRegistering] = useState(false);
-  const [nombre, setNombre] = useState('');
-  const [correo, setCorreo] = useState('');
-  const [password, setPassword] = useState('');
+  const [form, setForm] = useState({ nombre: '', correo: '', password: '' });
   const [error, setError] = useState('');
 
-  const handleLogin = async (e) => {
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    const endpoint = isRegistering ? 'register' : 'login';
+
     try {
-      const response = await fetch(`${USERS_API_URL}/login`, {
+      const response = await fetch(`${USERS_API}/${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre, password }),
+        body: JSON.stringify(form),
       });
 
-      if (!response.ok) throw new Error('Credenciales incorrectas');
+      if (!response.ok) throw new Error(isRegistering ? 'Error al registrar' : 'Credenciales incorrectas');
 
-      const data = await response.json();
-      onLoginSuccess(data);
+      if (isRegistering) {
+        alert('Cuenta creada exitosamente. Inicia sesión.');
+        setIsRegistering(false);
+      } else {
+        const data = await response.json();
+        onLoginSuccess(data);
+      }
     } catch (err) {
-      setError(err.message || 'Error al iniciar sesión');
-    }
-  };
-
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    setError('');
-    try {
-      const response = await fetch(`${USERS_API_URL}/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre, correo, password }),
-      });
-
-      if (!response.ok) throw new Error('Error al registrar usuario');
-
-      alert('Cuenta creada exitosamente. Ahora puedes iniciar sesión.');
-      setIsRegistering(false);
-      setCorreo('');
-    } catch (err) {
-      setError(err.message || 'Error en el registro');
+      setError(err.message);
     }
   };
 
@@ -68,30 +55,12 @@ function Login({ onLoginSuccess }) {
 
           {error && <p style={{ color: 'red', marginBottom: '10px' }}>{error}</p>}
 
-          <form onSubmit={isRegistering ? handleRegister : handleLogin}>
-            <input
-              type="text"
-              placeholder="Nombre"
-              value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
-              required
-            />
+          <form onSubmit={handleSubmit}>
+            <input type="text" name="nombre" placeholder="Nombre" value={form.nombre} onChange={handleChange} required />
             {isRegistering && (
-              <input
-                type="email"
-                placeholder="Correo electrónico"
-                value={correo}
-                onChange={(e) => setCorreo(e.target.value)}
-                required
-              />
+              <input type="email" name="correo" placeholder="Correo electrónico" value={form.correo} onChange={handleChange} required />
             )}
-            <input
-              type="password"
-              placeholder="Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <input type="password" name="password" placeholder="Contraseña" value={form.password} onChange={handleChange} required />
             <button type="submit" className="submit-btn">
               {isRegistering ? 'Registrarse' : 'Login Now'}
             </button>
