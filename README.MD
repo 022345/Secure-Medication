@@ -6,3 +6,4 @@ the medications indicated by their doctors.
 ### Technologies
 
 Programming language: C#
+Security: KeyCloak
