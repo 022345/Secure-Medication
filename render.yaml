@@ -91,7 +91,7 @@ services:
       name: keycloak
       plan: free
       runtime: docker
-      dockerfilePath: SecureMedication/Dockerfile
+      dockerfilePath: Dockerfile
       dockerContext: .
 
       envVars:
