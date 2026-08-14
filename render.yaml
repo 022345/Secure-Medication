@@ -86,15 +86,15 @@ services:
           value: 8080
     #All types need to be web
 
-    # Secutity Framework: Keycloak
+    # Security Framework: Keycloak
     - type: web    
       name: keycloak
       plan: free
       runtime: docker
       dockerfilePath: SecureMedication/Dockerfile
       dockerContext: .
-      
+
       envVars:
-      #Can't have two same fields. Only one
-      - key: PORT
-        value: 8080
+        - key: PORT
+          value: 8080
+        - fromGroup: keycloak-env
