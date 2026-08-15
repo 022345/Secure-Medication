@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Login from './views/Login.jsx';
 import Cart from './views/Cart.jsx';
-import './css/Login.jsx';
+import '../src/css/Login.css'
 
 const MEDICINES_API = 'https://gateway-eile.onrender.com/gateway/medicinesMRS/medicine/home';
 
