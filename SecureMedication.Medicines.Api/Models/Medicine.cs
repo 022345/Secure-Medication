@@ -57,21 +57,21 @@ namespace SecureMedication.Medicines.Api.Models
 
         }
 
-        public Medicine(string id, string name, string description, string brand,
-            int dailyDosage, int milligrams, int quantity, string presentation,
-            long servingsPerContainer, string? imageUrl, string? buyingLink)
+        public Medicine(string Id, string Name, string Description, string Brand,
+            int DailyDosage, int Milligrams, int Quantity, string Presentation,
+            long ServingsPerContainer, string? ImageUrl, string? BuyingLink)
         {
-            Id = id;
-            Name = name;
-            Description = description;
-            Brand = brand;
-            DailyDosage = dailyDosage;
-            Milligrams = milligrams;
-            Quantity = quantity;
-            Presentation = presentation;
-            ServingsPerContainer = servingsPerContainer;
-            ImageUrl = imageUrl;
-            BuyingLink = buyingLink;
+            Id = Id;
+            Name = Name;
+            Description = Description;
+            Brand = Brand;
+            DailyDosage = DailyDosage;
+            Milligrams = Milligrams;
+            Quantity = Quantity;
+            Presentation = Presentation;
+            ServingsPerContainer = ServingsPerContainer;
+            ImageUrl = ImageUrl;
+            BuyingLink = BuyingLink;
         }
     }
 }
