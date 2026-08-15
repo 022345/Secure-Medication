@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../css/App.css';
 
 const CART_API = 'https://gateway-eile.onrender.com/gateway/shoppingcartMRS/cart';
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../css/App.css'; 
 
-const USERS_API = 'https://tu-backend-api.com/api/users'; 
+const USERS_API = 'https://gateway-eile.onrender.com/gateway/usersMRS/api/users';
 
 export default function Login({ onLoginSuccess }) {
   const [isLogin, setIsLogin] = useState(true);
@@ -34,7 +34,7 @@ export default function Login({ onLoginSuccess }) {
       if (isLogin) {
         localStorage.setItem('token', data.token);
         setMessage('¡Inicio de sesión exitoso!');
-        onLoginSuccess(data.user || { id: 1, userName: form.userName });
+        onLoginSuccess(data.user || { id: data.id || 1, userName: form.userName });
       } else {
         setMessage('Usuario registrado exitosamente. Ahora puedes iniciar sesión.');
         setIsLogin(true);
@@ -92,3 +92,5 @@ export default function Login({ onLoginSuccess }) {
     </div>
   );
 }
+
+export default Login;
