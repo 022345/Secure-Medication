@@ -12,11 +12,11 @@ namespace SecureMedication.Medicines.Api.Models
         public string Id { get; set; }
 
         [Required] // Sets column as NOT NULL
-        [MaxLength(25)] // Defines maximum string length (VARCHAR(25))
+        [MaxLength(50)] // Defines maximum string length (VARCHAR(25))
         public string Name { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(150)]
+        [MaxLength(225)]
         public string Description { get; set; } = string.Empty;
 
         [Required]
@@ -28,7 +28,7 @@ namespace SecureMedication.Medicines.Api.Models
         public int Quantity { get; set; }
 
         [Required]
-        [MaxLength(50)]
+        [MaxLength(150)]
         public string Presentation { get; set; } = string.Empty;
 
         public long ServingsPerContainer { get; set; }
@@ -43,6 +43,21 @@ namespace SecureMedication.Medicines.Api.Models
         
         }
 
-
+        public Medicine(string id, string name, string description, string brand, 
+            int dailyDosage, int milligrams, int quantity, string presentation, 
+            long servingsPerContainer, string? imageUrl, string? buyingLink)
+        {
+            Id = id;
+            Name = name;
+            Description = description;
+            Brand = brand;
+            DailyDosage = dailyDosage;
+            Milligrams = milligrams;
+            Quantity = quantity;
+            Presentation = presentation;
+            ServingsPerContainer = servingsPerContainer;
+            ImageUrl = imageUrl;
+            BuyingLink = buyingLink;
+        }
     }
 }
