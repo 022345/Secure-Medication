@@ -83,15 +83,22 @@ function App() {
                 <h2 className="medicine-name">{med.name}</h2>
                 <p className="medicine-brand"><strong>Marca:</strong> {med.brand}</p>
                 <p className="medicine-description">{med.description}</p>
-                <div className="technical-info">
-                  <span><strong>Dosis:</strong> {med.daily_dosage}</span>
+                
+                <div className="technical-info" style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '0.9rem', margin: '10px 0' }}>
+                  <span><strong>Milligrams:</strong> {med.milligrams ?? med.Milligrams}</span>
+                  <span><strong>Quantity:</strong> {med.quantity ?? med.Quantity}</span>
+                  <span><strong>Presentation:</strong> {med.presentation ?? med.Presentation}</span>
+                  <span><strong>Servings/Container:</strong> {med.servingsPerContainer ?? med.ServingsPerContainer}</span>
+                  <span><strong>Dosis diaria:</strong> {med.dailyDosage ?? med.DailyDosage}</span>
                 </div>
+
                 <div className="indications-container">
                   {med.indications?.map((ind, index) => (
                     <span key={index} className="indication-tag">{ind}</span>
                   ))}
                 </div>
-                <a href={med.buying_link} target="_blank" rel="noopener noreferrer" className="buy-button">
+                
+                <a href={med.buyingLink ?? med.BuyingLink ?? '#'} target="_blank" rel="noopener noreferrer" className="buy-button">
                   Ver en Amazon
                 </a>
               </div>
