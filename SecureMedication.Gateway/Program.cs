@@ -29,6 +29,8 @@ namespace SecureMedication.Gateway
             }
 
             app.UseHttpsRedirection();
+    
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
