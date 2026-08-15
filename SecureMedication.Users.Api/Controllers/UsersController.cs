@@ -32,7 +32,7 @@ namespace SecureMedication.Users.Api.Controllers
         [Route("saveUsers")]
         public async Task<List<User>> saveUsers([FromBody] List<User> users)
         {
-            _usersDbContext.User.ToListAsync();
+            _usersDbContext.User.AddRangeAsync();
             _usersDbContext.SaveChanges();
             return users;
         }
