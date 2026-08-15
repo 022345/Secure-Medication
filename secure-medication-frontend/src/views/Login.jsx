@@ -1,9 +1,8 @@
-import { useState } from 'react';
 import React, { useState } from 'react';
 
 const USERS_API = 'https://tu-backend-api.com/api/users'; // Ajusta con la URL de tu API C#
 
-export default function AuthForm() {
+export default function Login({ onLoginSuccess }) {
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({ userName: '', password: '' });
   const [message, setMessage] = useState('');
@@ -16,7 +15,6 @@ export default function AuthForm() {
     e.preventDefault();
     setMessage('');
 
-    // Operador ternario: si isLogin es true va a 'login', si no va a 'register'
     const endpoint = isLogin ? 'login' : 'register';
 
     try {
@@ -33,9 +31,13 @@ export default function AuthForm() {
       }
 
       if (isLogin) {
-        // AQUÍ ENTRA EL JWT: Guardas el token que te devuelve el backend
+        // Guardas el token
         localStorage.setItem('token', data.token);
         setMessage('¡Inicio de sesión exitoso!');
+        
+        // ACTUALIZAMOS EL ESTADO GLOBAL EN APP.JSX
+        // Si tu backend no devuelve un objeto user, pasamos un mock temporal para que te deje avanzar
+        onLoginSuccess(data.user || { id: 1, userName: form.userName });
       } else {
         setMessage('Usuario registrado exitosamente. Ahora puedes iniciar sesión.');
         setIsLogin(true);
