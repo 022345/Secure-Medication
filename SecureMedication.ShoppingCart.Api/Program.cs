@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using SecureMedication.ShoppingCart.Api.Persistence;
 
 namespace SecureMedication.ShoppingCart.Api
 {
@@ -7,6 +9,12 @@ namespace SecureMedication.ShoppingCart.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var connectionString = builder.Configuration
+                .GetConnectionString("ShoppingCartConnectionString");
+
+            builder.Services.AddDbContext<CartDbContext>(options =>
+                options.UseNpgsql(connectionString)); 
+
             // Add services to the container.
 
             builder.Services.AddControllers();
@@ -14,6 +22,9 @@ namespace SecureMedication.ShoppingCart.Api
             builder.Services.AddOpenApi();
 
             var app = builder.Build();
+
+            var scope = app.Services.CreateScope();
+            var db = scope.ServiceProvider.GetService<CartDbContext>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
