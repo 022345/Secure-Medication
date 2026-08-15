@@ -24,7 +24,7 @@ namespace SecureMedication.Users.Api
 
 
             var scope = app.Services.CreateScope();
-            var scope = scope.ServiceProvider.GetRequiredService<MedicineDb>();
+            var db = scope.ServiceProvider.GetRequiredService<UsersDbContext>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
