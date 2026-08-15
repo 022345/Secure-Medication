@@ -31,7 +31,7 @@ namespace SecureMedication.Medicines.Api.Controllers
         public async Task <List<Medicine>> saveMedicines(List<Medicine> medicine)
         {
             _context.Medicine.AddRange(medicine);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             return medicine;
         }
     }
