@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../css/App.css'; 
 
-const USERS_API = 'https://gateway-eile.onrender.com/gateway/usersMRS/api/users';
+const USERS_API = 'https://gateway-eile.onrender.com/gateway/usersMRS/users'; 
 
 export default function Login({ onLoginSuccess }) {
   const [isLogin, setIsLogin] = useState(true);
@@ -16,26 +16,32 @@ export default function Login({ onLoginSuccess }) {
     e.preventDefault();
     setMessage('');
 
-    const endpoint = isLogin ? 'login' : 'register';
-
     try {
-      const response = await fetch(`${USERS_API}/${endpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Ocurrió un error en el servidor');
-      }
-
       if (isLogin) {
-        localStorage.setItem('token', data.token);
+        const response = await fetch(`${USERS_API}/seeUsers`);
+        const users = await response.json();
+        
+        const foundUser = users.find(
+          (u) => u.userName === form.userName && u.password === form.password
+        );
+
+        if (!foundUser) {
+          throw new Error('Credenciales incorrectas o usuario no encontrado');
+        }
+
         setMessage('¡Inicio de sesión exitoso!');
-        onLoginSuccess(data.user || { id: data.id || 1, userName: form.userName });
+        onLoginSuccess(foundUser);
       } else {
+        const response = await fetch(`${USERS_API}/saveUsers`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify([{ userName: form.userName, password: form.password }]),
+        });
+
+        if (!response.ok) {
+          throw new Error('Error al registrar el usuario');
+        }
+
         setMessage('Usuario registrado exitosamente. Ahora puedes iniciar sesión.');
         setIsLogin(true);
       }
