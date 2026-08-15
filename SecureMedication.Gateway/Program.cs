@@ -1,4 +1,7 @@
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+
 namespace SecureMedication.Gateway
 {
     public class Program
@@ -19,6 +22,21 @@ namespace SecureMedication.Gateway
             //builder.Services.AddControllers();
 
             builder.Services.AddOpenApi();
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false; // O true si usas HTTPS estricto en producción
+                options.Audience = builder.Configuration["Authentication:Audience"];
+                options.MetadataAddress = builder.Configuration["Authentication:MetadataAddress"];
+
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = builder.Configuration["Authentication:ValidIssuer"]
+                };
+            });
+
+            builder.Services.AddAuthorization();
 
             var app = builder.Build();
 
