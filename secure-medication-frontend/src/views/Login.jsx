@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import '../css/App.css'; 
 
-// IMPORTANTE: Cambia esta URL por la dirección real de tu microservicio de usuarios
 const USERS_API = 'https://tu-backend-api.com/api/users'; 
 
 export default function Login({ onLoginSuccess }) {
