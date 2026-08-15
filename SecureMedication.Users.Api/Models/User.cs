@@ -30,5 +30,13 @@ namespace SecureMedication.Users.Api.Models
         {
 
         }
+
+        public User(int userId, string userName, string password, string? medicineId)
+        {
+            UserId = userId;
+            UserName = userName;
+            Password = password;
+            MedicineId = medicineId;
+        }
     }
 }
