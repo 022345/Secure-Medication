@@ -10,10 +10,10 @@ namespace SecureMedication.Users.Api
         {
             var builder = WebApplication.CreateBuilder(args);
             var connectionString = builder.Configuration
-                .GetConnectionString("UsersDbConnectionString");
+                .GetConnectionString("UsersConnectionString");
 
             builder.Services.AddDbContext<UsersDbContext>(options => options
-            .UseNpgsql(connectionString, npgsql => npgsql.CommandTimeout(300)));
+            .UseNpgsql(connectionString));
             // Add services to the container.
 
             builder.Services.AddControllers();
