@@ -3,7 +3,7 @@ import Login from './views/Login';
 import Cart from './views/Cart';
 import './css/App.css';
 
-const MEDICINES_API = 'https://gateway-eile.onrender.com/gateway/medicinesMRS/medicine/home';
+const MEDICINES_API = 'https://gateway-eile.onrender.com/gateway/medicinesMRS/medicine/seeMedicine';
 
 const diccionarioSintomas = {
   "riñon": "kidney", "riñones": "kidneys", "higado": "liver", "hígado": "liver",
@@ -20,9 +20,15 @@ function App() {
 
   useEffect(() => {
     if (!user) return;
+    
     fetch(MEDICINES_API)
-      .then((res) => res.json())
-      .then((data) => setMedicamentos(Array.isArray(data) ? data : []))
+      .then((res) => {
+        if (!res.ok) throw new Error('Error al conectar con la API');
+        return res.json();
+      })
+      .then((data) => {
+        setMedicamentos(Array.isArray(data) ? data : []);
+      })
       .catch((err) => console.error('Error al conectar con la API de medicinas:', err));
   }, [user]);
 
