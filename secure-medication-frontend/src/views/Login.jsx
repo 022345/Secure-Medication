@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../css/App.css'; // Asegúrate de importar la ruta correcta de tu CSS
 
 const USERS_API = 'https://tu-backend-api.com/api/users'; // Ajusta con la URL de tu API C#
 
