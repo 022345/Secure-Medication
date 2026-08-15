@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import React, { useState } from 'react';
 
 const USERS_API = 'https://tu-backend-api.com/api/users'; // Ajusta con la URL de tu API C#
 
