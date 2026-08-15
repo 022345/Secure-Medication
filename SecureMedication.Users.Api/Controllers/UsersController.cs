@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SecureMedication.Users.Api.Models;
 using SecureMedication.Users.Api.Persistence;
+using System.Collections.Generic;
 
 namespace SecureMedication.Users.Api.Controllers
 {
@@ -23,10 +24,9 @@ namespace SecureMedication.Users.Api.Controllers
         }
 
         [Route("seeUsers")]
-        public async Task<List<User>> showUsers([FromBody] List<User> users)
+        public async Task<IEnumerable<User>> showUsers()
         {
-            _usersDbContext.User.ToListAsync();
-            return users;
+            return await _usersDbContext.User.ToListAsync();
         }
 
         [Route("saveUsers")]

@@ -29,10 +29,9 @@ namespace SecureMedication.Medicines.Api.Controllers
         }
 
         [Route("seeMedicine")]
-        public List<Medicine> showMedicines([FromBody] List<Medicine> medicine)
+        public async Task<IEnumerable<Medicine>> showMedicines()
         {
-            _context.Medicine.ToListAsync();
-            return medicine;
+            return await _context.Medicine.ToListAsync();
         }
 
 
