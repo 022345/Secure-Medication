@@ -15,6 +15,7 @@ namespace SecureMedication.Medicines.Api.Controllers
     public class MedicineController : Controller
     {
         private readonly MedicineDbContext _context;
+
         public MedicineController(MedicineDbContext context) 
         {
             _context = context;
@@ -28,10 +29,10 @@ namespace SecureMedication.Medicines.Api.Controllers
 
         [Route("saveMedicine")]
         //Need to be for the actual endpoint: public List<Medicine> SaveMedicines(Medicine medicine)
-        public async Task <List<Medicine>> saveMedicines(List<Medicine> medicine)
+        public async Task <List<Medicine>> saveMedicines([FromBody] List<Medicine> medicine)
         {
-            _context.Medicine.AddRange(medicine);
-            _context.SaveChanges();
+            _context.Medicine.AddRangeAsync(medicine);
+            _context.SaveChangesAsync();
             return medicine;
         }
     }

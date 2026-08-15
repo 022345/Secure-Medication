@@ -28,13 +28,13 @@ namespace SecureMedication.Medicines.Api
             var scope = app.Services.CreateScope();
             var db = scope.ServiceProvider.GetRequiredService<MedicineDbContext>();
 
-            var medicineList = db.Medicine.ToList();
+            //var medicineList = db.Medicine.ToList();
 
-            foreach (Medicine medicine in medicineList)
+            /*foreach (Medicine medicine in medicineList)
             {
                 Console.Write("Medicines");
                 Console.Write($"\nID{medicine.Id} \nName:{medicine.Name} \nDescription:{medicine.Description} \nBrand:{medicine.Brand} \nDailyDosage:{medicine.DailyDosage} \nMiligrams:{medicine.Milligrams} \nQuantity{medicine.Quantity} \nPresentation{medicine.Presentation} \nServings:{medicine.ServingsPerContainer}");
-            }
+            }*/
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
